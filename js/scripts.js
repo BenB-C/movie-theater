@@ -17,9 +17,9 @@ function Theater() {
 
 Theater.prototype.addTicket = function(name, showtime) {
   this.tickets.push(new Ticket(name, showtime));
-};
+}
 
-Theater.prototype.findTicket(name, time) {
+Theater.prototype.findTicket = function(name, time) {
   this.tickets.forEach(function(ticket) {
     if (name == ticket.name && time == ticket.showTime) {
       return ticket;
@@ -56,17 +56,17 @@ theater.addTicket("Late Night", 1945);
 theater.addTicket("Late Night", 2020);
 
 $(document).ready(function() {
-  // movieNames.forEach(function(movieName) {
-  //   $("#movie-select").append(`<option>${movieName}</option>`);
-  // });
+  movieNames.forEach(function(movieName) {
+    $("#movie-select").append(`<option>${movieName}</option>`);
+  });
 
-  $("#movie-select").append(`
-    <option>1</option>
-    <option>2</option>
-    <option>3</option>
-    <option>4</option>
-    <option>5</option>
-  `);
+  // $("#movie-select").append(`
+  //   <option>1</option>
+  //   <option>2</option>
+  //   <option>3</option>
+  //   <option>4</option>
+  //   <option>5</option>
+  // `);
 
   $("#some-form").submit(function(event) {
     event.preventDefault();
