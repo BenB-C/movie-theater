@@ -21,17 +21,27 @@ Theater.prototype.addTicket = function(name, showtime) {
 
 Theater.prototype.findTicket = function(name, time) {
   this.tickets.forEach(function(ticket) {
-    if (name == ticket.name && time == ticket.showTime) {
+    if (name == ticket.name && time == ticket.showtime) {
       return ticket;
     }
   });
   return false;
 }
 
+Theater.prototype.showtimes = function(movieName) {
+  var showtimes = [];
+  this.tickets.forEach(function(ticket) {
+    if (ticket.name == movieName) {
+      showtimes.push(ticket.showtime);
+    }
+  });
+  return showtimes;
+}
+
 function price(name, time, age) {
   var TicketPrice = FULL_PRICE;
   var ticket = theater.findTicket(name, time);
-  if (ticket.showTime <= MATINEE_TIME) {
+  if (ticket.showtime <= MATINEE_TIME) {
     TicketPrice = MATINEE_PRICE;
   }
 
@@ -39,34 +49,39 @@ function price(name, time, age) {
     TicketPrice *= 1 - DISCOUNT_RATE;
   }
   console.log(TicketPrice)
-  return TicketPrice
+  return TicketPrice;
 }
 
 // User interface --------------------------------
 var theater = new Theater();
 movieNames = ["Men In Black: International", "Late Night"];
 
-theater.addTicket("Men In Black: International", 1130);
-theater.addTicket("Men In Black: International", 1430);
-theater.addTicket("Men In Black: International", 2015);
-theater.addTicket("Late Night", 1140);
-theater.addTicket("Late Night", 1425);
-theater.addTicket("Late Night", 1700);
-theater.addTicket("Late Night", 1945);
-theater.addTicket("Late Night", 2020);
+theater.addTicket("Men In Black: International", "11:30 am");
+theater.addTicket("Men In Black: International", "02:30 pm");
+theater.addTicket("Men In Black: International", "08:15 pm");
+theater.addTicket("Late Night", "11:40 am");
+theater.addTicket("Late Night", "02:25 am");
+theater.addTicket("Late Night", "05:00 pm");
+theater.addTicket("Late Night", "07:45 pm");
+theater.addTicket("Late Night", "08:20 pm");
+
+function updateTimeSelect(movieName) {
+  theater.showtimes(movieName).forEach(function(showtime){
+    $("#time-select").append(`<option>${showtime}</option>`);
+  });
+}
 
 $(document).ready(function() {
   movieNames.forEach(function(movieName) {
     $("#movie-select").append(`<option>${movieName}</option>`);
   });
 
-  // $("#movie-select").append(`
-  //   <option>1</option>
-  //   <option>2</option>
-  //   <option>3</option>
-  //   <option>4</option>
-  //   <option>5</option>
-  // `);
+  updateTimeSelect($("#movie-select").val());
+
+  $("#movie-select").change(function(event) {
+    $("#time-select").empty();
+    updateTimeSelect($("#movie-select").val());
+  });
 
   $("#some-form").submit(function(event) {
     event.preventDefault();
